@@ -3,25 +3,28 @@ import java.awt.Graphics;
 
 public class Villain extends Actor
 {
-    private int SingleMovement = 7;
+    private int SingleMovement = 5;
     private int xdifFromBob;
     private int ydifFromBob;
     private float BobHypoteneuse;
-    private Color ogColour = new Color(255,255,0);
-    private Color collisionColour = new Color(255,0,0);
+    private Color ogColour = new Color(255,0,0);
+    private Color collisionColour = new Color(55,90,55);
     private Color currentColour = ogColour;
 
     public Villain()
     {
-
+    	
     }
 
     public void draw(Graphics g2, int x, int y)
     {
+    	double w = this.getwidth();
+    	int w1 = (int) w;
         g2.setColor(currentColour);
-        g2.fillOval(x, y, this.getwidth(), this.getwidth());
+        g2.fillOval(x, y, w1, w1);
         g2.setColor(new Color(0, 0, 0));
-        g2.drawOval(x, y, this.getwidth(), this.getwidth());
+        g2.drawOval(x, y, w1, w1);
+
     }
 
     public int getSingleMovement()
@@ -59,6 +62,11 @@ public class Villain extends Actor
     public void setColourCollision()
     {
         currentColour = collisionColour;
+    }
+    
+    public void setSingleMovement(int x) 
+    {
+    	SingleMovement = x;
     }
 
 }

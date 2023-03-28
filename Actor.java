@@ -1,11 +1,11 @@
-import java.awt.Color;
+
 import java.awt.Graphics;
 
 public abstract class Actor
 {
     private int x;
     private int y;
-    private int width = 35;
+    private int width = 75;
     private int midx = 0;
     private int midy = 0;
     private int xMove = 0;
@@ -84,4 +84,3 @@ public abstract class Actor
         return MovementHypoteneuse;
     }
 }
-

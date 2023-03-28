@@ -11,7 +11,7 @@ public class Character extends Actor
 
     public Character()
     {
-
+    	//score
     }
 
     public void setAngle(int x)
@@ -58,5 +58,4 @@ public class Character extends Actor
     {
         return SingleMovement;
     }
-
 }

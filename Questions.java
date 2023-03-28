@@ -17,8 +17,8 @@ public class Questions extends JLabel
     private Random rand = new Random();
     private String display = "";
     private String question = " ";
-    private List <Integer> numbers = new ArrayList <Integer> (Arrays.asList(0,1,2,3,4,5,6,7,8,9,10,11,12));
-    private List <String> signs = new ArrayList <String> (Arrays.asList("+","-","x","�"));
+    private List <Integer> numbers = new ArrayList <Integer> (Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12));
+    private List <String> signs = new ArrayList <String> (Arrays.asList("+","-","x","÷"));
 
     public Questions()
     {
@@ -62,7 +62,7 @@ public class Questions extends JLabel
             }
         }
 
-        if(sign == "�")
+        if(sign == "÷")
         {
             while(num2 == 0 || num1 % num2 != 0)
             {
@@ -106,7 +106,7 @@ public class Questions extends JLabel
             answer = num1 * num2;
         }
 
-        if(sign == "�")
+        if(sign == "÷")
         {
             answer = num1 / num2;
         }
