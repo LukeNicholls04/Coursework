@@ -24,12 +24,16 @@ import javax.swing.Timer;
 public class Map extends JPanel implements ActionListener, KeyListener
 {
     private int count = 0;
-    private int score = 0;
+    private int nextlevelCount = 0;
+    private int gameoverCount = 0;
+    private int level = 1;
     private Random rand = new Random();
     private Timer animation = new Timer(40,this);
     private Timer update = new Timer(40,this);
     private Timer Begin = new Timer(100,this);
     private Timer countdownTimer = new Timer(1000,this);
+    private Timer nextLevelTimer = new Timer(200,this);
+    private Timer gameOverTimer = new Timer(200,this);
     private Character bob = new Character();
     private Questions question = new Questions();
     private ArrayList <Villain> villains = new ArrayList();
@@ -37,7 +41,8 @@ public class Map extends JPanel implements ActionListener, KeyListener
     
     public Map()
     {
-        this.setBackground(new Color(130,156,208));
+    	this.setBackground(new Color(253,253,150));
+        //this.setBackground(new Color(130,156,208));
         for(int i = 0; i < 2; i++)
         {
             addVillain();
@@ -103,7 +108,8 @@ public class Map extends JPanel implements ActionListener, KeyListener
         
         bob.draw(g2,bob.getx(),bob.gety());
 
-        g2.setColor(new Color(0,11,79));
+        //g2.setColor(new Color(0,11,79));
+        g2.setColor(new Color(45,91,107));
         g2.setFont(new Font("Courier New", Font.PLAIN, question.getFontSize()));
         
         Rectangle displayRect = new Rectangle(0,0,getWidth(),getHeight()-400);
@@ -111,7 +117,7 @@ public class Map extends JPanel implements ActionListener, KeyListener
         
         
         Rectangle scoreRect = new Rectangle(0,0,getWidth()/2,100);
-        drawCenteredString(g2, "CURRENT SCORE:" + score, scoreRect,new Font("Monospaced", Font.BOLD, 50));
+        drawCenteredString(g2, "LEVEL:" + level, scoreRect,new Font("Monospaced", Font.BOLD, 50));
         
         Rectangle speedRect = new Rectangle(getWidth()/2,0,getWidth()/2,100);
         drawCenteredString(g2,"VILLAIN SPEED:" + villains.get(0).getSingleMovement() * 10 + "%", speedRect, new Font("Monospaced", Font.BOLD, 50));
@@ -132,6 +138,47 @@ public class Map extends JPanel implements ActionListener, KeyListener
         	
             setUp();
             Begin.stop();
+        }
+        
+        if(e.getSource() == gameOverTimer)
+        {
+        	gameoverCount++;
+        	if(gameoverCount % 2 != 0) 
+        	{
+        		question.setDisplay("");
+        	}
+        	if(gameoverCount % 2 == 0) 
+        	{
+        		question.setDisplay("GAME OVER");
+        	}
+        	if(gameoverCount == 6)
+        	{
+	        	gameOverTimer.stop();
+	            gameoverCount = 0;
+	            question.setDisplay("PRESS [ENTER] TO RESTART");
+        	}
+        	
+        }
+        
+        if(e.getSource() == nextLevelTimer) 
+        {
+        	nextlevelCount++;
+        	if(nextlevelCount % 2 != 0) 
+        	{
+        		question.setDisplay("");
+        	}
+        	if(nextlevelCount % 2 == 0) 
+        	{
+        		question.setDisplay("LEVEL " + (level-1) + " COMPLETE");
+        	}
+        	if(nextlevelCount == 6)
+        	{
+	        	nextLevelTimer.stop();
+	        	reset();
+	            countdown(3);
+	            nextlevelCount = 0;
+        	}
+        	
         }
         if(e.getSource() == countdownTimer)
         {
@@ -355,45 +402,46 @@ public class Map extends JPanel implements ActionListener, KeyListener
     }
     public void correctAnswer() 
     {
-    	score = score + 10;
-    	question.setDisplay("+10 points");
+    	question.setDisplay("LEVEL " + level + " COMPLETE");
+    	level = level + 1;
+    	nextlevelCountdown();
     	
-    	if(score == 10) 
+    	if(level == 2) 
     	{
     		for(int i = 0; i < villains.size(); i++) 
     		{
     			villains.get(i).setSingleMovement(6);
     		}
     	}
-    	if(score == 20) 
+    	if(level == 3) 
     	{
     		for(int i = 0; i < villains.size(); i++) 
     		{
     			villains.get(i).setSingleMovement(7);
     		}
     	}
-    	if(score == 30) 
+    	if(level == 4) 
     	{
     		addVillain();
     		villains.get(villains.size()-1).setx(0);
         	villains.get(villains.size()-1).sety(getHeight()/2 - villains.get(2).getwidth()/2);
         	villains.get(villains.size()-1).setSingleMovement(7);
     	}
-    	if(score == 40) 
+    	if(level == 5) 
     	{
     		for(int i = 0; i < villains.size(); i++) 
     		{
     			villains.get(i).setSingleMovement(8);
     		}
     	}
-    	if(score == 50) 
+    	if(level == 6) 
     	{
     		for(int i = 0; i < villains.size(); i++) 
     		{
     			villains.get(i).setSingleMovement(9);
     		}
     	}
-    	if(score == 60) 
+    	if(level == 7) 
     	{
     		addVillain();
     		villains.get(villains.size()-1).setx(getWidth() - villains.get(villains.size()-1).getwidth());
@@ -403,13 +451,20 @@ public class Map extends JPanel implements ActionListener, KeyListener
     }
     public void gameOver() 
     {
-    	score = 0;
+    	level = 1;
     	question.setDisplay("GAME OVER");
+    	gameoverCountdown();
     	
     	for(int i = 0; i < villains.size() - 1; i++) 
     	{
     		villains.get(i).setSingleMovement(5);
     	}
+    	
+    	
+    	
+    	
+    	
+    	
     	
     	if(villains.size() >= 3) 
     	{
@@ -421,6 +476,18 @@ public class Map extends JPanel implements ActionListener, KeyListener
     		villains.remove(2); 
     		villains.remove(3);
     	}
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
     }
     public void setUp()
     {
@@ -464,6 +531,16 @@ public class Map extends JPanel implements ActionListener, KeyListener
         update.stop();
         setUp();   
         
+    }
+    
+    public void gameoverCountdown()
+    {
+    	gameOverTimer.start();
+    }
+    
+    public void nextlevelCountdown() 
+    {
+    	nextLevelTimer.start();
     }
     
     public void countdown(int x)

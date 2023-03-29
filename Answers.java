@@ -8,7 +8,8 @@ public class Answers
     private int y;
     private boolean correct = false;
     private String text = "";
-    private Color currentColour = new Color(235,235,235);
+    //private Color currentColour = new Color(235,235,235);
+    private Color currentColour = new Color(255,174,188);
     public Answers()
     {
 
