@@ -1,4 +1,3 @@
-
 import java.awt.Graphics;
 
 public abstract class Actor
@@ -17,11 +16,7 @@ public abstract class Actor
 
     public Actor()
     {
-
-
-        // more abstract methods, set/get colour
-
-
+    	
     }
     public abstract void draw(Graphics g2, int x, int y);
     public abstract int getSingleMovement();

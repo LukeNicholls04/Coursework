@@ -14,7 +14,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Random;
-
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -42,7 +41,6 @@ public class Map extends JPanel implements ActionListener, KeyListener
     public Map()
     {
     	this.setBackground(new Color(253,253,150));
-        //this.setBackground(new Color(130,156,208));
         for(int i = 0; i < 2; i++)
         {
             addVillain();
@@ -55,7 +53,6 @@ public class Map extends JPanel implements ActionListener, KeyListener
         animation.start();
         Begin.start();
     }
-
     private void addAnswer()
     {
         answers.add(new Answers());
@@ -64,82 +61,47 @@ public class Map extends JPanel implements ActionListener, KeyListener
     {
         villains.add(new Villain());
     }
-
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        
-        
-        
-        
-        
-        
-        
-        
-        //
-        
-        
         for(int i = 0; i < answers.size(); i++)
         {
             answers.get(i).draw(g2,answers.get(i).getx(), answers.get(i).gety());
-            g2.setFont(new Font("Sans Serif", Font.BOLD, 80));  
+            g2.setFont(new Font("Sans Serif", Font.PLAIN, 80));  
             Rectangle r = new Rectangle(answers.get(i).getx(),answers.get(i).gety(),answers.get(i).getWidth(),answers.get(i).getWidth());
             drawCenteredString(g2, "" + answers.get(i).getText(), r, g2.getFont());
         }
-   
-       
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
         for(int i = 0; i < villains.size(); i++)
         {
             villains.get(i).draw(g2,villains.get(i).getx(),villains.get(i).gety());
         }
-        
         bob.draw(g2,bob.getx(),bob.gety());
-
-        //g2.setColor(new Color(0,11,79));
         g2.setColor(new Color(45,91,107));
         g2.setFont(new Font("Courier New", Font.PLAIN, question.getFontSize()));
-        
         Rectangle displayRect = new Rectangle(0,0,getWidth(),getHeight()-400);
         drawCenteredString(g2,question.getDisplay(),displayRect,g2.getFont());
-        
-        
         Rectangle scoreRect = new Rectangle(0,0,getWidth()/2,100);
-        drawCenteredString(g2, "LEVEL:" + level, scoreRect,new Font("Monospaced", Font.BOLD, 50));
-        
+        drawCenteredString(g2, "LEVEL:" + level, scoreRect,new Font("Monospaced", Font.BOLD, 50));    
         Rectangle speedRect = new Rectangle(getWidth()/2,0,getWidth()/2,100);
         drawCenteredString(g2,"VILLAIN SPEED:" + villains.get(0).getSingleMovement() * 10 + "%", speedRect, new Font("Monospaced", Font.BOLD, 50));
     }
-
     public void actionPerformed(ActionEvent e)
     {
         if(e.getSource() == Begin)
         {
-        	 answers.get(0).setx(50);
-             answers.get(0).sety(50);
-             answers.get(1).setx(getWidth()-50-answers.get(1).getWidth());
-             answers.get(1).sety(50);
-             answers.get(2).setx(50);
-             answers.get(2).sety(getHeight()-50-answers.get(1).getWidth());
-             answers.get(3).setx(getWidth()-50-answers.get(1).getWidth());
-             answers.get(3).sety(getHeight()-50-answers.get(1).getWidth());
-        	
+         answers.get(0).setx(50);
+            answers.get(0).sety(50);
+            answers.get(1).setx(getWidth()-50-answers.get(1).getWidth());
+            answers.get(1).sety(50);
+            answers.get(2).setx(50);
+            answers.get(2).sety(getHeight()-50-answers.get(1).getWidth());
+            answers.get(3).setx(getWidth()-50-answers.get(1).getWidth());
+            answers.get(3).sety(getHeight()-50-answers.get(1).getWidth());
             setUp();
             Begin.stop();
         }
-        
         if(e.getSource() == gameOverTimer)
         {
         	gameoverCount++;
@@ -157,9 +119,7 @@ public class Map extends JPanel implements ActionListener, KeyListener
 	            gameoverCount = 0;
 	            question.setDisplay("PRESS [ENTER] TO RESTART");
         	}
-        	
-        }
-        
+        }     
         if(e.getSource() == nextLevelTimer) 
         {
         	nextlevelCount++;
@@ -177,8 +137,7 @@ public class Map extends JPanel implements ActionListener, KeyListener
 	        	reset();
 	            countdown(3);
 	            nextlevelCount = 0;
-        	}
-        	
+        	}        	
         }
         if(e.getSource() == countdownTimer)
         {
@@ -190,72 +149,69 @@ public class Map extends JPanel implements ActionListener, KeyListener
                 countdownTimer.stop();
                 question.setFontSize(100);
                 question.setQuestion();
-                question.setDisplay(question.getQuestion());
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                //creating answers 
-                
-                 //no equal fake answers
-                
+                question.setDisplay(question.getQuestion());                            
+                int used1 = -1;
+                int used2 = -1;
+                int used3 = -1;       
                 for(int i = 0; i < answers.size(); i++)
                 {
                 	int num = rand.nextInt(7)+ 1;
-                	int posORneg = rand.nextInt(2); 
-                	
+                	int posORneg = rand.nextInt(2);             	
                 	if(posORneg == 0) 
                 	{
                 		num = num * -1;
                 	}
-                	while(question.getAnswer() + num < 0) 
+                	
+                	
+                	
+                	
+                	
+                	
+                	
+                	//1 second glitch gets stuck in this while 
+                	
+                	
+                	
+                	
+                	
+                	while(question.getAnswer() + num < 0 || num == used1 || num == used2 || num == used3) 
                 	{
                 		num = rand.nextInt(7)+ 1;
-                    	posORneg = rand.nextInt(1);  
+                    	posORneg = rand.nextInt(2);  
                     	if(posORneg == 0) 
                     	{
                     		num = num * -1;
                     	}
                 	}
+                	
+                	
+                	
+                	
+                	
+                	
+                	
+                	
+                	
+                	
+                	
+                	
+                	if(i == 0) 
+                	{
+                		used1 = num;
+                	}
+                	else if(i == 1)
+                	{
+                		used2 = num;
+                	}
+                	else if(i == 2)
+                	{
+                		used3 = num;
+                	}                
                 	answers.get(i).setText("" + (question.getAnswer()+num));
-                }
-                           
+                }                        
                 int correct = rand.nextInt(4);
                 answers.get(correct).setText("" + question.getAnswer());
-                answers.get(correct).setCorrect(true);
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
+                answers.get(correct).setCorrect(true);                              
             }
         }
         if(e.getSource() == animation)
@@ -267,15 +223,10 @@ public class Map extends JPanel implements ActionListener, KeyListener
         {
             Point p = MouseInfo.getPointerInfo().getLocation();
             SwingUtilities.convertPointFromScreen(p,  this);
-
             bob.setMidpoint(bob.getx()+bob.getwidth(),bob.gety() + bob.getwidth());
             bob.setmoves(p.x, p.y, bob.getMidx(), bob.getMidy());
-
             if(bob.getHypoteneuse() > bob.getSingleMovement())
             {
-            	
-            	// prevent walls
-            	
             	if(bob.getx() + bob.getXMove() < 0) 
             	{
             		bob.setx(0);
@@ -302,13 +253,10 @@ public class Map extends JPanel implements ActionListener, KeyListener
             		bob.sety(bob.gety() + bob.getYMove());
             	}
             }
-
-
             for(int i = 0; i < villains.size(); i++)
             {
                 villains.get(i).setMidpoint(villains.get(i).getx()+villains.get(i).getwidth(),villains.get(i).gety() + villains.get(i).getwidth());
                 villains.get(i).setmoves(bob.getMidx(), bob.getMidy(), villains.get(i).getMidx(), villains.get(i).getMidy());
-
                 if(villains.get(i).getHypoteneuse() > villains.get(i).getSingleMovement())
                 {
                     villains.get(i).setx(villains.get(i).getx() + villains.get(i).getXMove());
@@ -321,53 +269,12 @@ public class Map extends JPanel implements ActionListener, KeyListener
                 }
                 villains.get(i).setHypoteneuseFromBob(bob.getMidx(), villains.get(i).getMidx(), bob.getMidy(), villains.get(i).getMidy());
                 if(villains.get(i).getHypoteneuseFromBob() <= bob.getwidth())
-                {
-                    if(villains.get(i).getHypoteneuseFromBob() < bob.getwidth()) 
-                    {
-                    	
-                    }
-                   
-
-                    
-
-                    
-                    
-                    
-                   
-                    
-                    //prevent overlaps
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                  
+                {                              
                     villains.get(i).setColourCollision();
                     update.stop();
-                    gameOver();
-                   
+                    gameOver();                   
                 }
             }
-            
-            //Answer collisions 
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
             for(int i = 0; i < answers.size(); i++) 
             {
             	if(((bob.getMidx()-bob.getwidth()/2) >= answers.get(i).getx()) && (bob.getMidx()+bob.getwidth()/2 <= answers.get(i).getx() + answers.get(i).getWidth()) && (bob.getMidy()-bob.getwidth()/2) >= answers.get(i).gety() && (bob.getMidy()+bob.getwidth()/2) <= answers.get(i).gety() + answers.get(i).getWidth())
@@ -380,23 +287,11 @@ public class Map extends JPanel implements ActionListener, KeyListener
             		else 
             		{
             			gameOver();
-            			answers.get(i).setcolour(new Color(255,0,0));
+            			answers.get(i).setcolour(new Color(255,0,0));           		
             		}
-            		update.stop();
-            		
+            		update.stop();           		
             	}
-            }
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+            }            
             repaint();
         }
     }
@@ -404,8 +299,11 @@ public class Map extends JPanel implements ActionListener, KeyListener
     {
     	question.setDisplay("LEVEL " + level + " COMPLETE");
     	level = level + 1;
-    	nextlevelCountdown();
-    	
+    	nextlevelCountdown(); 	
+    	if(level % 2 == 0) 
+    	{
+    		question.addNumbers(2);
+    	}   	
     	if(level == 2) 
     	{
     		for(int i = 0; i < villains.size(); i++) 
@@ -447,47 +345,26 @@ public class Map extends JPanel implements ActionListener, KeyListener
     		villains.get(villains.size()-1).setx(getWidth() - villains.get(villains.size()-1).getwidth());
         	villains.get(villains.size()-1).sety(getHeight()/2 - villains.get(2).getwidth()/2);
         	villains.get(villains.size()-1).setSingleMovement(9);
-    	}  	
+    	} 	
     }
     public void gameOver() 
     {
     	level = 1;
     	question.setDisplay("GAME OVER");
-    	gameoverCountdown();
-    	
+    	gameoverCountdown();  	
     	for(int i = 0; i < villains.size() - 1; i++) 
     	{
     		villains.get(i).setSingleMovement(5);
-    	}
-    	
-    	
-    	
-    	
-    	
-    	
-    	
+    	}  	
+    	if(villains.size() == 4) 
+    	{
+    		villains.remove(3); 
+    	}	
     	if(villains.size() >= 3) 
     	{
     		villains.remove(2);
     	}
-    	
-    	else if(villains.size() == 4) 
-    	{
-    		villains.remove(2); 
-    		villains.remove(3);
-    	}
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
+    	question.resetNumbers();
     }
     public void setUp()
     {
@@ -520,29 +397,23 @@ public class Map extends JPanel implements ActionListener, KeyListener
         for(int i = 0; i < villains.size(); i++)
         {
             villains.get(i).setColourOG();
-        }
-        
+        } 
         for(int i = 0; i < answers.size(); i++) 
         {
-        	answers.get(i).setcolour(new Color(235,235,235));
-        }
-        
+        	answers.get(i).setcolour(new Color(255,174,188));
+        }      
         countdownTimer.stop();
         update.stop();
-        setUp();   
-        
-    }
-    
+        setUp();     
+    }  
     public void gameoverCountdown()
     {
     	gameOverTimer.start();
-    }
-    
+    } 
     public void nextlevelCountdown() 
     {
     	nextLevelTimer.start();
-    }
-    
+    }  
     public void countdown(int x)
     {
         count = x;
@@ -550,8 +421,7 @@ public class Map extends JPanel implements ActionListener, KeyListener
         question.setDisplay(count);
         count--;
         countdownTimer.start();
-    }
-    
+    }  
     public void drawCenteredString(Graphics g, String text, Rectangle rect, Font font) {
         // Get the FontMetrics
         FontMetrics metrics = g.getFontMetrics(font);
@@ -563,13 +433,11 @@ public class Map extends JPanel implements ActionListener, KeyListener
         g.setFont(font);
         // Draw the String
         g.drawString(text, x, y);
-    }
-    
+    }   
     public void keyPressed(KeyEvent e)
     {
         if(e.getKeyCode() == 32)
         {
-            //no reset needed when gameover implemented fully
             reset();
             countdown(3);
         }
@@ -577,13 +445,11 @@ public class Map extends JPanel implements ActionListener, KeyListener
         {
             reset();
         }
-    }
-    
+    }   
     public void keyReleased(KeyEvent e)
     {
 
     }
-    
     public void keyTyped(KeyEvent e)
     {
 
