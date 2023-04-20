@@ -6,13 +6,10 @@ public class Character extends Actor
 {
     //integer value for the starting angle where the first arc in the Character is drawn from
     private int angle;
-
     //integer value used to determine which colour is used to draw with
     private int colrotation = 0;
-
     //integer value for the hypotenuse length which the Character can travel per update
     private int SingleMovement = 10;
-
     //allows instances of Character to be created
     public Character()
     {
@@ -32,17 +29,20 @@ public class Character extends Actor
     }
 
     //method used to draw the Character
+    /**
+     *
+     * @param g2
+     * @param x
+     * @param y
+     */
     public void draw(Graphics g2, int x, int y)
     {
         //creates an integer value to store the width from Actor
         int width = this.getwidth();
-
         //stores a Color as a variable
         Color black = new Color(0,0,0);
-
         //integer value for the number of arcs which the Character is composed of
         int rotation = 9;
-
         //for loop to draw all the separate arcs which Character is composed of
         for(int i = 0; i < rotation; i++)
         {
@@ -63,14 +63,11 @@ public class Character extends Actor
                 g2.setColor(new Color(68,16,111));
                 colrotation = 0;
             }
-
             //draws a single filled arc for the Character
             g2.fillArc(x, y, width, width, angle, 360/rotation);
-
             //outlines the arc in black
             g2.setColor(black);
             g2.drawArc(x, y, width, width, angle, 360/rotation);
-
             //changes to angle to be the starting angle at which the next arc will be drawn at
             angle = angle + 360/rotation;
         }

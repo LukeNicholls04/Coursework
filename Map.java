@@ -22,44 +22,31 @@ public class Map extends JPanel implements ActionListener, KeyListener
 {
     //integer which is displayed to show a countdown
     private int count = 0;
-
     //integer value which is used to determine what is displayed when the nextLevelTimer is called
     private int nextlevelCount = 0;
-
     //integer value which is used to determine what is displayed when the gameOverTimer is called
     private int gameoverCount = 0;
-
     //integer value for the current level in the game which the player is on
     private int level = 1;
-
     //creates an instance of Random()
     private Random rand = new Random();
-
     //Timer used to update the drawing of the Character
     private Timer animation = new Timer(40,this);
-
     //Timer used to update the coordinates and states of all instances of Character, Villain and Answers
     private Timer update = new Timer(40,this);
-
     //Timer used to set the user interface to its starting position when the program is run
     private Timer Begin = new Timer(500,this);
-
     //Timer used to signal when to change an integer while displaying a countdown
     private Timer countdownTimer = new Timer(1000,this);
-
     //Timer used to signal when to change the display while transitioning into the next level
     private Timer nextLevelTimer = new Timer(200,this);
-
     //Timer used to signal when to change the display after game over occurs
     private Timer gameOverTimer = new Timer(200,this);
-
     //creates an instance of Character and Questions
     private Character bob = new Character();
     private Questions question = new Questions();
-
     //creates an ArrayList which stores instances of Villain
     private ArrayList <Villain> villains = new ArrayList();
-
     //creates an ArrayList which stores instances of Answers
     private ArrayList <Answers> answers = new ArrayList();
 
@@ -101,6 +88,10 @@ public class Map extends JPanel implements ActionListener, KeyListener
     }
 
     //method which is used to draw on all aspects of the GUI
+    /**
+     *
+     * @param g the <code>Graphics</code> object to protect
+     */
     public void paintComponent(Graphics g)
     {
         //sets up Graphics2D to be used for drawing
@@ -151,6 +142,10 @@ public class Map extends JPanel implements ActionListener, KeyListener
     }
 
     //method which detects ActionEvents such as Timers being called
+    /**
+     *
+     * @param e the event to be processed
+     */
     public void actionPerformed(ActionEvent e)
     {
 
@@ -177,24 +172,20 @@ public class Map extends JPanel implements ActionListener, KeyListener
         //if the source of the ActionEvent is from the gameOver Timer
         if(e.getSource() == gameOverTimer)
         {
-
             //implements gameoverCount by 1
             gameoverCount++;
-
             //if the gamoverCount is odd
             if(gameoverCount % 2 != 0)
             {
                 //set the Questions display text to be blank
                 question.setDisplay("");
             }
-
             //if the gamoverCount is even
             if(gameoverCount % 2 == 0)
             {
                 //sets the Question display text to say "GAME OVER"
                 question.setDisplay("GAME OVER");
             }
-
             //if the gameoverCount is equal to 6
             if(gameoverCount == 6)
             {
@@ -210,34 +201,26 @@ public class Map extends JPanel implements ActionListener, KeyListener
         {
             //implements the nextlevelCount by 1
             nextlevelCount++;
-
             //if the nextlevel count is odd
             if(nextlevelCount % 2 != 0)
             {
-
                 //sets the Questions display text to be blank
                 question.setDisplay("");
             }
-
             //if the nextlevel count is even
             if(nextlevelCount % 2 == 0)
             {
-
                 //sets the Questions display text to say which level the player have completed
                 question.setDisplay("LEVEL " + (level-1) + " COMPLETE");
             }
-
             //if the nextlevel count is equal to 6
             if(nextlevelCount == 6)
             {
-
                 //stops the nextLevel Timer and calls the reset method to set the GUI up for the next level
                 nextLevelTimer.stop();
                 reset();
-
                 //starts a 3 seconds countdown for the next level using the countdown method
                 countdown(3);
-
                 //resets the nextlevel count to equal 0
                 nextlevelCount = 0;
             }
@@ -248,48 +231,37 @@ public class Map extends JPanel implements ActionListener, KeyListener
         {
             //sets the Questions display text equal to the count
             question.setDisplay(count);
-
             //decrease the count by 1
             count--;
-
             //if the count is smaller than 0
             if(count < 0)
             {
                 //starts the update Timer
                 update.start();
-
                 //stops the countdown Timer
                 countdownTimer.stop();
-
                 //sets the font size for the Questions display text equal to 50
                 question.setFontSize(50);
-
                 //sets the maths question in Question equal to a new random maths question
                 question.setQuestion();
-
                 //sets the Question display text equal to the current maths question
                 question.setDisplay(question.getQuestion());
-
                 //3 integer values used to represent the incorrect answers given to the first 3 answer boxes
                 int used1 = -1;
                 int used2 = -1;
                 int used3 = -1;
-
                 //for loop to iterate through all the instances of Answers is the answers ArrayList
                 for(int i = 0; i < answers.size(); i++)
                 {
                     //generates a random integer between 1-7
                     int num = rand.nextInt(7)+ 1;
-
                     //generates a random integer between 0-1
                     int posORneg = rand.nextInt(2);
-
                     //if posORneg is equal to 0-1 it makes num negative, meaning num is a random number between -7-7 excluding 0
                     if(posORneg == 0)
                     {
                         num = num * -1;
                     }
-
                     //repeats steps until the all 4 incorrect answers are positive and unique
                     while(question.getAnswer() + num < 0 || num == used1 || num == used2 || num == used3)
                     {
@@ -301,35 +273,28 @@ public class Map extends JPanel implements ActionListener, KeyListener
                             num = num * -1;
                         }
                     }
-
                     //if the instance of Answer at position i is the first one in the Answers ArrayList
                     if(i == 0)
                     {
                         used1 = num;
                     }
-
                     //if the instance of Answer at position i is the second one in the Answers ArrayList
                     else if(i == 1)
                     {
                         used2 = num;
                     }
-
                     //if the Answer at position i is the third one in the Answers ArrayList
                     else if(i == 2)
                     {
                         used3 = num;
                     }
-
                     //sets the Answers text equal to the correct answer + num
                     answers.get(i).setText("" + (question.getAnswer()+num));
                 }
-
                 //sets a random instance of Answer to be correct
                 int correct = rand.nextInt(4);
-
                 //sets the text of the correct instance of Answer equal to the correct answer to the maths question
                 answers.get(correct).setText("" + question.getAnswer());
-
                 //set the boolean value for correct to be true for the correct instance of Answer
                 answers.get(correct).setCorrect(true);
             }
@@ -349,73 +314,59 @@ public class Map extends JPanel implements ActionListener, KeyListener
             //imports and store information about the mouse
             Point p = MouseInfo.getPointerInfo().getLocation();
             SwingUtilities.convertPointFromScreen(p,  this);
-
             //sets the midpoints of the character using its current x and y coordinates which it's drawn from
             bob.setMidpoint(bob.getx()+bob.getwidth(),bob.gety() + bob.getwidth());
-
             //sets the next moves in terms of x and y which the Character will move towards the mouse pointer with
             bob.setmoves(p.x, p.y, bob.getMidx(), bob.getMidy());
-
             //if the hypotenuse between the Character and the mouse pointer is longer than the maximum distance the Character can move in one update
             if(bob.getHypoteneuse() > bob.getSingleMovement())
             {
-
                 //prevents the x coordinate of the Character from being out of the boundaries of the left edge of the GUI
                 if(bob.getx() + bob.getXMove() < 0)
                 {
                     bob.setx(0);
                 }
-
                 //prevents the x coordinate of the Character from being out of the boundaries of the right edge of the GUI
                 else if(bob.getx() + bob.getXMove() > getWidth() - bob.getwidth())
                 {
                     bob.setx(getWidth() - bob.getwidth());
                 }
-
                 //sets the x coordinate of the Character equal to its current x coordinate + xmove
                 else
                 {
                     bob.setx(bob.getx() + bob.getXMove());
                 }
-
                 //prevents the y coordinate of the Character from being out of the boundaries of the top edge of the GUI
                 if(bob.gety() + bob.getYMove() < 0)
                 {
                     bob.sety(0);
                 }
-
                 //prevents the y coordinate of the Character from being out of the boundaries of the bottom edge of the GUI
                 else if(bob.gety() + bob.getYMove() > getHeight() - bob.getwidth())
                 {
                     bob.sety(getHeight() - bob.getwidth());
                 }
-
                 //sets the y coordinate of the Character equal to its current y coordinate + ymove
                 else
                 {
                     bob.sety(bob.gety() + bob.getYMove());
                 }
             }
-
             //iterates through all instances of Villain in the villains ArrayList
             for(int i = 0; i < villains.size(); i++)
             {
                 //sets the midpoints of a Villains using its x and y coordinates which it's drawn from
                 villains.get(i).setMidpoint(villains.get(i).getx()+villains.get(i).getwidth(),villains.get(i).gety() + villains.get(i).getwidth());
-
                 //sets the next moves in terms of x and y which the Villain will move towards the Character with
                 villains.get(i).setmoves(bob.getMidx(), bob.getMidy(), villains.get(i).getMidx(), villains.get(i).getMidy());
-
                 //if the hypotenuse between a Villain and the Character is bigger than the maximum distance the Villain can move in one update
                 if(villains.get(i).getHypoteneuse() > villains.get(i).getSingleMovement())
                 {
                     //sets the Villains x coordinate equal to its current x coordinate + its next movement in x
                     villains.get(i).setx(villains.get(i).getx() + villains.get(i).getXMove());
-
                     //sets the Villains y coordinate equal to its current y coordinate + its next movement in y
                     villains.get(i).sety(villains.get(i).gety() + villains.get(i).getYMove());
                 }
-
                 //if the hypotenuse between a Villain and the Character is not bigger than the maximum distance the Villain can move in one update
                 else
                 {
@@ -423,29 +374,26 @@ public class Map extends JPanel implements ActionListener, KeyListener
                     villains.get(i).setx(bob.getx());
                     villains.get(i).sety(bob.gety());
                 }
-
                 //calls a method to calculate the length of the hypotenuse between a Villain and the Character
                 villains.get(i).setHypoteneuseFromBob(bob.getMidx(), villains.get(i).getMidx(), bob.getMidy(), villains.get(i).getMidy());
-
                 //if the hypotenuse between a Villain and the Character are touching
                 if(villains.get(i).getHypoteneuseFromBob() <= bob.getwidth())
                 {
                     //change the colour of the Villain to its collision colour
                     villains.get(i).setColourCollision();
-
                     //stop the update Timer
                     update.stop();
-
                     //calls the gameOver method
                     gameOver();
                 }
             }
-
             //iterates through all instances of Answer in the answers ArrayList
             for(int i = 0; i < answers.size(); i++)
             {
                 //if the Character is fully inside an Answer box
-                if(((bob.getMidx()-bob.getwidth()/2) >= answers.get(i).getx()) && (bob.getMidx()+bob.getwidth()/2 <= answers.get(i).getx() + answers.get(i).getWidth()) && (bob.getMidy()-bob.getwidth()/2) >= answers.get(i).gety() && (bob.getMidy()+bob.getwidth()/2) <= answers.get(i).gety() + answers.get(i).getWidth())
+                if(((bob.getMidx()-bob.getwidth()/2) >= answers.get(i).getx()) && (bob.getMidx()+bob.getwidth()/2 <= answers.get(i).getx()
+                        + answers.get(i).getWidth()) && (bob.getMidy()-bob.getwidth()/2) >= answers.get(i).gety()
+                        && (bob.getMidy()+bob.getwidth()/2) <= answers.get(i).gety() + answers.get(i).getWidth())
                 {
                     //if the Answer which has been entered is correct
                     if(answers.get(i).getCorrect() == true)
@@ -454,7 +402,6 @@ public class Map extends JPanel implements ActionListener, KeyListener
                         correctAnswer();
                         answers.get(i).setcolour(new Color(0,255,0));
                     }
-
                     //if the Answer which has been entered is incorrect
                     else
                     {
@@ -462,12 +409,10 @@ public class Map extends JPanel implements ActionListener, KeyListener
                         gameOver();
                         answers.get(i).setcolour(new Color(255,0,0));
                     }
-
                     //stops the update Timer
                     update.stop();
                 }
             }
-
             //calls the paintComponent method
             repaint();
         }
@@ -478,19 +423,15 @@ public class Map extends JPanel implements ActionListener, KeyListener
     {
         //sets the Question display text to show which level has been completed
         question.setDisplay("LEVEL " + level + " COMPLETE");
-
         //increases the level number by 1
         level = level + 1;
-
         //calls the nextlevelCountdown method to transition into the next level
         nextlevelCountdown();
-
         //if the level number is even, the next 2 consecutive numbers are added to the numbers list which can be used in the maths questions
         if(level % 2 == 0)
         {
             question.addNumbers(2);
         }
-
         //if the level number is equal to 2, the maximum single movement for the Villains is set to 6
         if(level == 2)
         {
@@ -499,7 +440,6 @@ public class Map extends JPanel implements ActionListener, KeyListener
                 villains.get(i).setSingleMovement(6);
             }
         }
-
         //if the level number is equal to 3, the maximum single movement for the Villains is set to 7
         if(level == 3)
         {
@@ -508,18 +448,15 @@ public class Map extends JPanel implements ActionListener, KeyListener
                 villains.get(i).setSingleMovement(7);
             }
         }
-
         //if the level number is equal to 4, a new Villain is added on the left hand side of the screen
         if(level == 4)
         {
             addVillain();
             villains.get(villains.size()-1).setx(0);
             villains.get(villains.size()-1).sety(getHeight()/2 - villains.get(2).getwidth()/2);
-
             //the maximum single movement for the new Villain is set to 7
             villains.get(villains.size()-1).setSingleMovement(7);
         }
-
         //if the level number is equal to 5, the maximum single movement for the Villains is set to 8
         if(level == 5)
         {
@@ -528,7 +465,6 @@ public class Map extends JPanel implements ActionListener, KeyListener
                 villains.get(i).setSingleMovement(8);
             }
         }
-
         //if the level number is equal to 6, the maximum single movement for the Villains is set to 9
         if(level == 6)
         {
@@ -537,14 +473,12 @@ public class Map extends JPanel implements ActionListener, KeyListener
                 villains.get(i).setSingleMovement(9);
             }
         }
-
         //if the level number is equal to 7, a new Villain is added on the right hand side of the screen
         if(level == 7)
         {
             addVillain();
             villains.get(villains.size()-1).setx(getWidth() - villains.get(villains.size()-1).getwidth());
             villains.get(villains.size()-1).sety(getHeight()/2 - villains.get(2).getwidth()/2);
-
             //the maximum single movement for the new Villain is set to 9
             villains.get(villains.size()-1).setSingleMovement(9);
         }
@@ -555,32 +489,26 @@ public class Map extends JPanel implements ActionListener, KeyListener
     {
         //the level number is reset to 1
         level = 1;
-
         //the question display text is set to show GAME OVER
         question.setDisplay("GAME OVER");
-
         //a method for transitioning through a gamer over is called
         gameoverCountdown();
-
         //iterates through all instances of Villain in the villains ArrayList
         for(int i = 0; i < villains.size() - 1; i++)
         {
             //sets the maximum single movement per update for a villain equal to 5
             villains.get(i).setSingleMovement(5);
         }
-
         //if there are 4 Villains in the villains ArrayList, remove the 4th one
         if(villains.size() == 4)
         {
             villains.remove(3);
         }
-
         //if there are 3 Villains in the villains ArrayList, remove the 3rd one
         if(villains.size() >= 3)
         {
             villains.remove(2);
         }
-
         //reset the numbers List equal to the numbers 1-10
         question.resetNumbers();
     }
@@ -590,20 +518,16 @@ public class Map extends JPanel implements ActionListener, KeyListener
     {
         //sets the font size for the Questions display text to 50
         question.setFontSize(50);
-
         //sets the Questions display text to its beginning format
         question.setDisplay("[SPACE BAR]");
-
         //sets the Characters coordinates to its starting coordinates
         bob.setx(getWidth()/2 - bob.getwidth()/2);
         bob.sety(getHeight()/2 - bob.getwidth()/2);
-
         //sets the coordinates for the first two Villains in the villains ArrayList to their starting coordinates
         villains.get(0).setx(getWidth()/2 - villains.get(0).getwidth()/2);
         villains.get(0).sety(0);
         villains.get(1).setx(getWidth()/2 - villains.get(1).getwidth()/2);
         villains.get(1).sety(getHeight() - villains.get(1).getwidth());
-
         //if there are more than 3 Villains in the villains ArrayList
         if(villains.size() >= 3)
         {
@@ -611,7 +535,6 @@ public class Map extends JPanel implements ActionListener, KeyListener
             villains.get(2).setx(0);
             villains.get(2).sety(getHeight()/2 - villains.get(2).getwidth()/2);
         }
-
         //if there are more than 4 Villains in the villains ArrayList
         if(villains.size() == 4)
         {
@@ -619,7 +542,6 @@ public class Map extends JPanel implements ActionListener, KeyListener
             villains.get(3).setx(getWidth() - villains.get(villains.size()-1).getwidth());
             villains.get(3).sety(getHeight()/2 - villains.get(2).getwidth()/2);
         }
-
         //iterates through all the instances of Answer in the answers ArrayList
         for(int i = 0; i < answers.size(); i++)
         {
@@ -639,17 +561,14 @@ public class Map extends JPanel implements ActionListener, KeyListener
         {
             villains.get(i).setColourOG();
         }
-
         //sets the colour of each instance of Answer in the answers ArrayList their original colour
         for(int i = 0; i < answers.size(); i++)
         {
             answers.get(i).setcolour(new Color(255,174,188));
         }
-
         //stops the countdown Timer and the update Timer
         countdownTimer.stop();
         update.stop();
-
         //call the setup method
         setUp();
     }
@@ -657,7 +576,6 @@ public class Map extends JPanel implements ActionListener, KeyListener
     //method which starts the gameOver Timer
     public void gameoverCountdown()
     {
-
         gameOverTimer.start();
     }
 
@@ -668,23 +586,31 @@ public class Map extends JPanel implements ActionListener, KeyListener
     }
 
     //method which displays a countdown from the integer value passed through to 0
+    /**
+     *
+     * @param x
+     */
     public void countdown(int x)
     {
         //sets the count equal to the integer value passed through
         count = x;
-
         //sets the font size for the Questions display text to 150
         question.setFontSize(150);
-
         //sets the Questions display text equal to count
         question.setDisplay(count);
-
         //decreases count by 1 and starts the countdown Timer
         count--;
         countdownTimer.start();
     }
 
     //method which allows you to draw strings centred inside an area
+    /**
+     *
+     * @param g
+     * @param text
+     * @param rect
+     * @param font
+     */
     public void drawCenteredString(Graphics g, String text, Rectangle rect, Font font) {
         //imports FontMetrics and stores it as a variable
         FontMetrics metrics = g.getFontMetrics(font);
@@ -709,7 +635,6 @@ public class Map extends JPanel implements ActionListener, KeyListener
             reset();
             countdown(3);
         }
-
         //if the enter key was pressed the reset method is called 
         if(e.getKeyCode() == 10)
         {

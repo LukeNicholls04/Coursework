@@ -6,24 +6,18 @@ public class Villain extends Actor
 {
     //integer value for the hypotenuse length which the Villain can travel per update
     private int SingleMovement = 5;
-
     //integer values for the difference in x and y coordinates between a Villain and the Character
     private int xdifFromBob;
     private int ydifFromBob;
-
     //the length of the hypotenuse of a right-angled triangle between the coordinates of a Villain and the Character
     private float BobHypoteneuse;
-
     //original colour of the Villains
     private Color ogColour = new Color(255,0,0);
-
     //the colour which a Villain will change to after colliding with the Character
     private Color collisionColour = new Color(30,200,30);
-
     //variable which stores the current colour of a Villain
     //sets the current colour to ogColour
     private Color currentColour = ogColour;
-
     //allows instances of Villain to be created
     public Villain()
     {
@@ -31,16 +25,20 @@ public class Villain extends Actor
     }
 
     //method used to draw a Villain
+    /**
+     *
+     * @param g2
+     * @param x
+     * @param y
+     */
     public void draw(Graphics g2, int x, int y)
     {
-        //stores the width of the JFrame() as a variable
+        //stores the diameter of the villain as a variable
         int w = this.getwidth();
-
         //draws a circle using the currentcolour,
         //diameter and x and y coordinates which are passed through
         g2.setColor(currentColour);
         g2.fillOval(x, y, w, w);
-
         //outlines the circle in black
         g2.setColor(new Color(0, 0, 0));
         g2.drawOval(x, y, w, w);
@@ -53,6 +51,13 @@ public class Villain extends Actor
     }
 
     //calculates the hypotenuse length of the right-angled triangle between 2 sets of coordinates passed through
+    /**
+     *
+     * @param bx
+     * @param vx
+     * @param by
+     * @param vy
+     */
     public void setHypoteneuseFromBob(int bx, int vx, int by, int vy)
     {
         //uses Pythagoras's theorem to calculate the hypotenuse

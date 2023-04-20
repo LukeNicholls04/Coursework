@@ -4,28 +4,21 @@ public abstract class Actor
     //integer values for the x and y coordinates
     private int x;
     private int y;
-
     //integer value for the diameter
     private int width = 40;
-
     //integer values for the midpoint
     private int midx ;
     private int midy;
-
     //integer values for the next x and y coordinates once updated
     private int xMove;
     private int yMove;
-
     //integer values for the distance between 2 sets of coordinates
     private int xdif;
     private int ydif;
-
     //the length of the hypotenuse of a right-angled triangle between 2 sets of coordinates
     private double MovementHypoteneuse;
-
     //the scale factor required to scale down a right-angled triangle between 2 sets of coordinates to a specific hypotenuse length
     private double ScaleFactor ;
-
     //allows instances of Actor to be created
     public Actor()
     {
@@ -35,13 +28,21 @@ public abstract class Actor
     //abstract method which forces child classes to implement their own draw() method
     public abstract void draw(Graphics g2, int x, int y);
 
-    //abstract integer which forces child classes to set their own hypotenuse length which their Actor can travel per update
+    //abstract method which forces child classes to implement their own getSingleMovement() method
     public abstract int getSingleMovement();
 
     //method to set the change in x and y coordinates which will be implemented during the next update
+    /**
+     *
+     * @param px
+     * @param py
+     * @param mx
+     * @param my
+     */
     public void setmoves(int px, int py, int mx, int my)
     {
-        //similar maths to calculating unit vectors - this calculates the most accurate integer values for xMove and yMove which will form a triangle with a hypotenuse length of ScaleFactor
+        //similar maths to calculating unit vectors
+        //this calculates the most accurate integer values for xMove and yMove which will form a triangle with a hypotenuse length of singlemovement
         xdif = px - mx;
         ydif = py - my;
         MovementHypoteneuse = Math.sqrt(Math.pow(xdif, 2) + Math.pow(ydif, 2));
@@ -93,6 +94,11 @@ public abstract class Actor
     }
 
     //calculates the midpoint of the Actor based on its x and y coordinates which are passed through
+    /**
+     *
+     * @param x
+     * @param y
+     */
     public void setMidpoint(int x, int y)
     {
         midx = x - this.getwidth()/2;

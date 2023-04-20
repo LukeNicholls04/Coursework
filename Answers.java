@@ -5,20 +5,15 @@ public class Answers
 {
     //integer value for the width of the Answers
     private int width = 70;
-
     //integer values for the x and y coordinates of the Answers
     private int x;
     private int y;
-
     //boolean value for whether the Answer box contains the correct answer to the question or not
     private boolean correct = false;
-
     //String value for the text which is drawn inside the Answer box
     private String text = "";
-
     //Color which is used to draw the Answers
     private Color currentColour = new Color(255,174,188);
-
     //allows instances of Answers to be created
     public Answers()
     {
@@ -91,7 +86,6 @@ public class Answers
         //draws the Answers using the currentcolour, width and x and y coordinates which are passed through
         g2.setColor(currentColour);
         g2.fillRect(x,y,width,width);
-
         //outlines the Answers drawing in black
         g2.setColor(new Color(0,0,0));
         g2.drawRect(x,y,width,width);
